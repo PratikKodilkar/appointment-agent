@@ -1,12 +1,12 @@
 [project]
-name = "edusmart-students-agent"
+name = "appointment-scheduling-agent"
 version = "0.0.1"
-description = "EduSmart Student Agentic System is the world first AI Teacher that actually works."
+description = "A modular and AI-powered appointment booking agent designed to streamline scheduling for businesses"
 authors = [
-    { name = "Muhammad Junaid", email = "mr.junaidshaukat@gmail.com" },
+    { name = "Pratik Kodilkar"},
 ]
 readme = "README.md"
-license = { text = "Commercial" }
+license = { text = "MIT License" }
 requires-python = ">=3.9"
 dependencies = [
     "langgraph>=0.2.6",
@@ -19,13 +19,18 @@ dependencies = [
     "requests>=2.32.3",
     "types-requests>=2.32.0.20241016",
     "langchain-groq>=0.2.1",
-    "transformers>=4.46.2",
     "composio-langgraph>=0.6.19",
 ]
 
 
 [project.optional-dependencies]
-dev = ["mypy>=1.11.1", "ruff>=0.6.1"]
+dev = [
+    "mypy>=1.11.1",
+    "ruff>=0.6.1",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "langsmith>=0.1.0",
+]
 
 [build-system]
 requires = ["setuptools>=73.0.0", "wheel"]
