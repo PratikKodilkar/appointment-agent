@@ -6,6 +6,6 @@ RUN pip install --upgrade pip
 
 RUN PYTHONDONTWRITEBYTECODE=1 pip install --no-cache-dir -c /api/constraints.txt -e /deps/*
 
-ENV LANGSERVE_GRAPHS='{"react_agent": "./src/react_agent/graph.py:react_graph"}'
+ENV LANGSERVE_GRAPHS='{"react_agent": "./src/react_agent/graph.py:react_graph", "appointment_agent": "./src/appointment_agent/graph.py:appointment_agent_graph"}'
 
 WORKDIR /deps/react-agents

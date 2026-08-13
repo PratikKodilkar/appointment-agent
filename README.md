@@ -6,7 +6,7 @@ Users can check available time slots, confirm bookings, and receive queue update
 
 ## Tech Stack:
 - Agent : LangGraph, Composio (Tools Library), Voice Orchestrator (Bland.com)
-- LLMs: Gemini-2.0-flash-exp 
+- LLMs: gemini-3.5-flash-lite
 - Interface (NextJS15)
 - Deployment (Vercel, LangGraph Cloud)
 - Tests (LangSmith, LLM Unit Tests Code.)

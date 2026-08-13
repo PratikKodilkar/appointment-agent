@@ -30,12 +30,4 @@ schedule_tools_set = composio_toolset.get_tools(
     ]
 )
 
-# Separate out 
-schedule_tools_write = composio_toolset.get_tools(
-    actions=[
-        Action.GOOGLECALENDAR_CREATE_EVENT,
-        Action.GMAIL_CREATE_EMAIL_DRAFT
-    ]
-)
-
-schedule_tools_write_node = ToolNode(schedule_tools_write + [make_confirmation_call])
+schedule_tools_write_node = ToolNode(schedule_tools_set + [make_confirmation_call])
