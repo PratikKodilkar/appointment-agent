@@ -44,7 +44,9 @@ async def generate_response(
         strategy="last",
         token_counter=model,
         include_system=False,  # Not needed since systemMessage is added separately
-        allow_partial=True,
+        allow_partial=False,
+        start_on="human",
+        end_on=("human", "tool"),
     )
 
     # Get the model's response
