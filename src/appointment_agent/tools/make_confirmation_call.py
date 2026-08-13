@@ -2,10 +2,13 @@ import requests
 import dotenv
 import os
 
+from langchain_core.tools import tool
+
 # Load environment variables
 dotenv.load_dotenv()
 
 BLAND_API_KEY = os.environ.get("BLAND_API_KEY")
+@tool
 def make_confirmation_call(phone_number: str, instructions: str):
     """
     Makes a confirmation call using the Bland.ai API.
