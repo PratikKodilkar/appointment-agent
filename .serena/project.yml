@@ -1,0 +1,2 @@
+project_name: "appointment-agent"
+languages: ["typescript", "python"]
