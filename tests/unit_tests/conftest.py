@@ -2,20 +2,37 @@ import sys
 from unittest.mock import MagicMock
 
 import pytest
-from langchain_core.tools import Tool
+from langchain_core.tools import BaseTool
+from pydantic import BaseModel
 
 
-def _fake_tool(name: str) -> Tool:
-    """Create a fake LangChain Tool for testing."""
-    def dummy_func():
-        """Dummy tool function."""
-        return ""
+class _EmptyArgsSchema(BaseModel):
+    """Real pydantic model so ToolNode's schema introspection terminates.
 
-    tool = Tool.from_function(
-        func=dummy_func,
-        name=name,
-        description=f"Fake tool {name}",
-    )
+    A MagicMock's own get_input_schema() would return another MagicMock,
+    which get_all_basemodel_annotations() recurses into infinitely.
+    """
+
+
+def _fake_tool(name: str) -> MagicMock:
+    """Create a fake LangChain Tool for testing.
+
+    Returns a MagicMock with BaseTool spec so it passes isinstance(mock, BaseTool)
+    checks in ToolNode while remaining fully mockable for Task 1's assertions.
+    Pre-configures the attributes ToolNode.__init__ introspects (get_input_schema,
+    func, coroutine) so construction doesn't recurse or blow up on mock internals.
+    Note: .name attribute must be set explicitly after construction since
+    MagicMock(name=...) sets the mock's repr name, not an actual .name attribute.
+    """
+    tool = MagicMock(spec=BaseTool)
+    tool.name = name
+    tool.description = f"Fake tool {name}"
+    tool.args_schema = _EmptyArgsSchema
+    tool.get_input_schema.return_value = _EmptyArgsSchema
+    tool.func = None
+    tool.coroutine = None
+    tool.metadata = {}
+    tool.tags = None
     return tool
 
 
@@ -55,8 +72,8 @@ def appointment_nodes(monkeypatch):
 
     # Patch the composio_langgraph module to add the ComposioToolSet class and Action enum
     import composio_langgraph
-    composio_langgraph.ComposioToolSet = FakeComposioToolSet
-    composio_langgraph.Action = Action
+    monkeypatch.setattr(composio_langgraph, "ComposioToolSet", FakeComposioToolSet, raising=False)
+    monkeypatch.setattr(composio_langgraph, "Action", Action, raising=False)
 
     mod_names = [
         "appointment_agent.nodes._tools",
