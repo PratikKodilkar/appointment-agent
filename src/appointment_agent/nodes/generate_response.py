@@ -8,6 +8,7 @@ from langchain_core.messages import AIMessage, trim_messages
 from langchain_core.runnables import RunnableConfig
 
 from appointment_agent.state import AppointmentAgentState
+from appointment_agent.configuration import Configuration
 from appointment_agent.prompts import AGENT_SYSTEM
 from appointment_agent.nodes._tools import schedule_tools_set
 
@@ -33,8 +34,9 @@ async def generate_response(
     """
 
     # Format the system prompt. Customize this to change the agent's behavior.
+    configuration = Configuration.from_runnable_config(config)
     today_datetime = datetime.datetime.now().isoformat()
-    system_message = AGENT_SYSTEM.format(today_datetime=today_datetime)
+    system_message = configuration.system_prompt.format(today_datetime=today_datetime)
 
     trimmedStateMessages = trim_messages(
         state["messages"],
